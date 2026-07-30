@@ -1,0 +1,35 @@
+// pages/PracticePage.ts
+import { Page, Locator } from '@playwright/test';
+
+export class PracticePage {
+  readonly page: Page;
+  readonly loginNavButton: Locator;
+  readonly emailInput: Locator;
+  readonly passwordInput: Locator;
+  readonly loginButton: Locator;
+  readonly errorMessage: Locator;
+
+  constructor(page: Page) {
+    this.page = page;
+    // Using explicit, robust text and CSS selectors
+    this.loginNavButton = page.locator('text=My Account'); 
+    this.emailInput = page.locator('input#username');
+    this.passwordInput = page.locator('input#password');
+    this.loginButton = page.locator('input[name="login"]');
+    this.errorMessage = page.locator('.woocommerce-error'); 
+  }
+
+  async navigateTo(url: string) {
+    await this.page.goto(url);
+  }
+
+  async clickLoginNav() {
+    await this.loginNavButton.click();
+  }
+
+  async login(email: string, pass: string) {
+    await this.emailInput.fill(email);
+    await this.passwordInput.fill(pass);
+    await this.loginButton.click();
+  }
+}
